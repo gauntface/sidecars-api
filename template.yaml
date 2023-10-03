@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: focused-api
+
+Resources:
+  FunctionA:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+      BuildProperties:
+        Binary: function_a
+    Properties:
+      CodeUri: ./lambda
+      Handler: bootstrap
+      Runtime: provided.al2
+  FunctionB:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+      BuildProperties:
+        Binary: function_b
+    Properties:
+      CodeUri: ./lambda
+      Handler: bootstrap
+      Runtime: provided.al2
