@@ -13,6 +13,12 @@ Resources:
       CodeUri: ./lambda
       Handler: bootstrap
       Runtime: provided.al2
+      Events:
+        HTTPEvent:
+          Type: "HttpApi"
+          Properties:
+            Path: "/functiona"
+            Method: "GET"
   FunctionB:
     Type: AWS::Serverless::Function
     Metadata:
@@ -23,3 +29,9 @@ Resources:
       CodeUri: ./lambda
       Handler: bootstrap
       Runtime: provided.al2
+      Events:
+        HTTPEvent:
+          Type: "HttpApi"
+          Properties:
+            Path: "/functionb"
+            Method: "GET"
