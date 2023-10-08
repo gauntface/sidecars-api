@@ -11,8 +11,8 @@ tracing = { version = "0.1", features = ["log"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
 
 [[bin]]
-name = "function_a"
-path = "src/function_a.rs"
+name = "healthcheck"
+path = "src/healthcheck.rs"
 
 [[bin]]
 name = "function_b"

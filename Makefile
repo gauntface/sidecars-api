@@ -1,7 +1,7 @@
 build:
 	sam build --beta-features
 
-local: build
+server: build
 	sam local start-api \
 		--port 3001 \
 		--force-image-build \

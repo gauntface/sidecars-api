@@ -2,13 +2,29 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: focused-api
 
+Parameters:
+  FocusedEnv:
+    Type: String
+    Default: local
+    AllowedValues:
+      - local
+      - staging
+      - prod
+
+Globals:
+  Function:
+    Timeout: 5
+    Environment:
+      Variables:
+        FOCUSED_ENV: !Ref FocusedEnv
+
 Resources:
-  FunctionA:
+  HealthCheck:
     Type: AWS::Serverless::Function
     Metadata:
       BuildMethod: rust-cargolambda
       BuildProperties:
-        Binary: function_a
+        Binary: healthcheck
     Properties:
       CodeUri: ./lambda
       Handler: bootstrap
@@ -17,7 +33,7 @@ Resources:
         HTTPEvent:
           Type: "HttpApi"
           Properties:
-            Path: "/functiona"
+            Path: "/ok"
             Method: "GET"
   FunctionB:
     Type: AWS::Serverless::Function
