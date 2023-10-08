@@ -7,3 +7,13 @@ server: build
 		--force-image-build \
 		--config-env=local \
 		--config-file="samconfig.toml"
+
+lint:
+	cd lambda && cargo fmt --check
+	cd lambda && cargo clippy -- -Dwarnings
+
+lint-fix:
+	cd lambda && cargo fmt
+
+install-deps:
+	pip3 install cargo-lambda

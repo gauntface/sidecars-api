@@ -3,9 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::env;
 
 #[derive(Deserialize)]
-struct Request {
-}
-
+struct Request {}
 
 #[derive(Serialize)]
 struct ResponseBody {
@@ -13,6 +11,7 @@ struct ResponseBody {
     environment: String,
 }
 
+#[allow(non_snake_case)]
 #[derive(Serialize)]
 struct Response {
     statusCode: i32,
