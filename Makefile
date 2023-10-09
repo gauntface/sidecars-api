@@ -1,3 +1,7 @@
+clean:
+	rm -rf .aws-sam
+	cd lambda && cargo clean
+
 build:
 	sam build --beta-features
 
@@ -7,6 +11,9 @@ server: build
 		--force-image-build \
 		--config-env=local \
 		--config-file="samconfig.toml"
+
+watch:
+	npx nodemon --ext rs --watch './lambda/src/' --exec 'make build'
 
 test:
 	cd lambda && cargo test --verbose

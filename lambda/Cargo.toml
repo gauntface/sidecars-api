@@ -19,5 +19,5 @@ name = "healthcheck"
 path = "src/healthcheck.rs"
 
 [[bin]]
-name = "function_b"
-path = "src/function_b.rs"
+name = "whoami"
+path = "src/whoami.rs"
