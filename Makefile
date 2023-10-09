@@ -8,6 +8,12 @@ server: build
 		--config-env=local \
 		--config-file="samconfig.toml"
 
+test:
+	cd lambda && cargo test --verbose
+
+test-coverage:
+	cd lambda && cargo llvm-cov --html
+
 lint:
 	cd lambda && cargo fmt --check
 	cd lambda && cargo clippy -- -Dwarnings

@@ -1,2 +1,3 @@
 lambda/target/
 .aws-sam/
+*.profraw
