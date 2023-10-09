@@ -18,12 +18,7 @@ struct Response {
     body: ResponseBody,
 }
 
-/// This is the main body for the function.
-/// Write your code inside it.
-/// There are some code example in the following URLs:
-/// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
-/// - https://github.com/aws-samples/serverless-rust-demo/
-async fn function_handler(_event: LambdaEvent<Request>) -> Result<Response, Error> {
+async fn handler(_event: LambdaEvent<Request>) -> Result<Response, Error> {
     let resp = Response {
         statusCode: 200,
         body: ResponseBody {
@@ -36,13 +31,24 @@ async fn function_handler(_event: LambdaEvent<Request>) -> Result<Response, Erro
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    tracing_subscriber::fmt()
-        .with_max_level(tracing::Level::INFO)
-        // disable printing the name of the module in every log line.
-        .with_target(false)
-        // disabling time is handy because CloudWatch will add the ingestion time.
-        .without_time()
-        .init();
+    run(service_fn(handler)).await
+}
 
-    run(service_fn(function_handler)).await
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use lambda_runtime::Context;
+
+    #[tokio::test]
+    async fn test_handler_with_environment() {
+        env::set_var("FOCUSED_ENV", "example");
+
+        let context = Context::default();
+        let payload = Request {};
+        let event = LambdaEvent { payload, context };
+        let result = handler(event).await.unwrap();
+        assert_eq!(result.statusCode, 200);
+        assert_eq!(result.body.status, "ok");
+        assert_eq!(result.body.environment, "example");
+    }
 }

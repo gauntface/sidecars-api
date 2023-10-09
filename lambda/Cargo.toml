@@ -10,6 +10,10 @@ tokio = { version = "1", features = ["macros"] }
 tracing = { version = "0.1", features = ["log"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt"] }
 
+# standard crate data is left out
+[dev-dependencies]
+cargo-llvm-cov = ">= 0.5.33"
+
 [[bin]]
 name = "healthcheck"
 path = "src/healthcheck.rs"
