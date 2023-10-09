@@ -1,0 +1,28 @@
+name: Build 🔧
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Get the code
+      - uses: actions/checkout@v3
+
+      - name: Install Deps 🌎
+        run: make install-deps
+
+      - name: Lint 🌟
+        run: make lint
+      - name: Build 🔧
+        run: make build
+      # - name: Test 🧪
+      #   run: cargo test --verbose
