@@ -1,3 +1,6 @@
 lambda/target/
 .aws-sam/
 *.profraw
+*.pem
+.envrc
+env.json

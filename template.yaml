@@ -3,20 +3,27 @@ Transform: AWS::Serverless-2016-10-31
 Description: focused-api
 
 Parameters:
-  FocusedEnv:
+  SidecarEnv:
     Type: String
     Default: local
     AllowedValues:
       - local
+      - dev
       - staging
       - prod
+  GitHubAppID:
+    Type: String
+  GitHubAppPrivateKey:
+    Type: String
 
 Globals:
   Function:
     Timeout: 5
     Environment:
       Variables:
-        FOCUSED_ENV: !Ref FocusedEnv
+        SIDECAR_ENV: !Ref SidecarEnv
+        GITHUB_APP_ID: !Ref GitHubAppID
+        GITHUB_APP_PRIVATE_KEY: !Ref GitHubAppPrivateKey
 
 Resources:
   HealthCheck:
@@ -34,20 +41,4 @@ Resources:
           Type: "HttpApi"
           Properties:
             Path: "/ok"
-            Method: "GET"
-  WhoAmI:
-    Type: AWS::Serverless::Function
-    Metadata:
-      BuildMethod: rust-cargolambda
-      BuildProperties:
-        Binary: whoami
-    Properties:
-      CodeUri: ./lambda
-      Handler: bootstrap
-      Runtime: provided.al2
-      Events:
-        HTTPEvent:
-          Type: "HttpApi"
-          Properties:
-            Path: "/whoami"
             Method: "GET"
