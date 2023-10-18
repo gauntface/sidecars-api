@@ -10,7 +10,9 @@ server: build
 		--port 3001 \
 		--force-image-build \
 		--config-env=local \
-		--config-file="samconfig.toml"
+		--config-file="samconfig.toml" \
+		--env-vars="env.json" \
+		--force-image-build
 
 watch:
 	npx nodemon --ext rs --watch './lambda/src/' --exec 'make build'
@@ -30,3 +32,6 @@ lint-fix:
 
 install-deps:
 	pip3 install cargo-lambda
+
+install-fedora-deps: install-deps
+	sudo dnf install -y pkg-config perl perl-FindBin openssl openssl-devel direnv
