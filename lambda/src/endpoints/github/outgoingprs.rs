@@ -4,9 +4,7 @@ use serde::Serialize;
 use sidecars::apis::github;
 
 #[derive(Serialize)]
-struct ResponseBody {
-
-}
+struct ResponseBody {}
 
 #[derive(Serialize)]
 struct ErrorResponseBody {
@@ -46,8 +44,8 @@ async fn main() -> Result<(), Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::env;
     use lambda_http::http;
+    use std::env;
 
     #[tokio::test]
     async fn test_handler_with_environment() {

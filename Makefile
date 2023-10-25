@@ -17,7 +17,7 @@ server: build
 watch:
 	npx nodemon --ext rs --watch './lambda/src/' --exec 'make build'
 
-test:
+test: lint-fix
 	cd lambda && cargo test
 
 test-coverage:
