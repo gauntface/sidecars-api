@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: focused-api
 
 Parameters:
-  SidecarEnv:
+  SidecarsEnv:
     Type: String
     Default: local
     AllowedValues:
@@ -21,7 +21,7 @@ Globals:
     Timeout: 5
     Environment:
       Variables:
-        SIDECAR_ENV: !Ref SidecarEnv
+        SIDECARS_ENV: !Ref SidecarsEnv
         GITHUB_APP_ID: !Ref GitHubAppID
         GITHUB_APP_PRIVATE_KEY: !Ref GitHubAppPrivateKey
 
@@ -31,7 +31,7 @@ Resources:
     Metadata:
       BuildMethod: rust-cargolambda
       BuildProperties:
-        Binary: healthcheck
+        Binary: healthcheck_ok
     Properties:
       CodeUri: ./lambda
       Handler: bootstrap
@@ -41,4 +41,21 @@ Resources:
           Type: "HttpApi"
           Properties:
             Path: "/ok"
+            Method: "GET"
+
+  GithubOutgoingPRs:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: rust-cargolambda
+      BuildProperties:
+        Binary: github_outgoing_prs
+    Properties:
+      CodeUri: ./lambda
+      Handler: bootstrap
+      Runtime: provided.al2
+      Events:
+        HTTPEvent:
+          Type: "HttpApi"
+          Properties:
+            Path: "/github/outgoing-prs"
             Method: "GET"

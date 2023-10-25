@@ -18,7 +18,7 @@ watch:
 	npx nodemon --ext rs --watch './lambda/src/' --exec 'make build'
 
 test:
-	cd lambda && cargo test --verbose
+	cd lambda && cargo test
 
 test-coverage:
 	cd lambda && cargo llvm-cov --html
