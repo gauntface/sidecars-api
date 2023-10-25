@@ -1,5 +1,5 @@
 [package]
-name = "test-handler"
+name = "sidecars"
 version = "0.1.0"
 edition = "2021"
 
@@ -25,5 +25,9 @@ features = ["apigw_http"]
 cargo-llvm-cov = ">= 0.5.35"
 
 [[bin]]
-name = "healthcheck"
-path = "src/healthcheck.rs"
+name = "healthcheck_ok"
+path = "src/endpoints/healthcheck/ok.rs"
+
+[[bin]]
+name = "github_outgoing_prs"
+path = "src/endpoints/github/outgoingprs.rs"
