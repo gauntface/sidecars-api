@@ -15,6 +15,14 @@ Parameters:
     Type: String
   GitHubAppPrivateKey:
     Type: String
+  GatewayCorsOrigins:
+    Type: String
+  FirebaseProjectID:
+    Type: String
+  APIDomain:
+    Type: String
+  CertificateARN:
+    Type: String
 
 Globals:
   Function:
@@ -26,6 +34,33 @@ Globals:
         GITHUB_APP_PRIVATE_KEY: !Ref GitHubAppPrivateKey
 
 Resources:
+  ApiGateway:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: sidecars-api
+      CorsConfiguration:
+        AllowMethods:
+          - OPTIONS
+          - GET
+          - POST
+        AllowHeaders:
+          - "Authorization"
+        AllowOrigins: !Split [",", !Ref GatewayCorsOrigins]
+      Auth:
+        Authorizers:
+          FirebaseAuthorizer:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              audience:
+                - !Ref FirebaseProjectID
+              issuer: !Sub https://securetoken.google.com/${FirebaseProjectID}
+        DefaultAuthorizer: FirebaseAuthorizer
+      Domain:
+        DomainName: !Ref APIDomain
+        CertificateArn: !Ref CertificateARN
+        EndpointConfiguration: REGIONAL
+
+
   HealthCheck:
     Type: AWS::Serverless::Function
     Metadata:
@@ -40,8 +75,11 @@ Resources:
         HTTPEvent:
           Type: "HttpApi"
           Properties:
+            ApiId: !Ref ApiGateway
             Path: "/ok"
             Method: "GET"
+            Auth:
+              Authorizer: NONE
 
   GithubOutgoingPRs:
     Type: AWS::Serverless::Function
@@ -57,5 +95,6 @@ Resources:
         HTTPEvent:
           Type: "HttpApi"
           Properties:
+            ApiId: !Ref ApiGateway
             Path: "/github/outgoing-prs"
             Method: "GET"
