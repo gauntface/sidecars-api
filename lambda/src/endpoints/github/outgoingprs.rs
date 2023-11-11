@@ -1,5 +1,6 @@
 use lambda_http::{run, service_fn, Body, Error, Request, Response};
 use serde::Serialize;
+use std::env;
 
 use sidecars::apis::github;
 
@@ -12,6 +13,9 @@ struct ErrorResponseBody {
 }
 
 async fn handler(_event: Request) -> Result<Response<Body>, Error> {
+    let cors_origin = env::var("CORS_ALLOW_ORIGIN")
+        .expect("Environment variable CORS_ALLOW_ORIGIN is no defined.");
+
     let app = github::outgoing_prs();
     if app.is_err() {
         let body = ErrorResponseBody {
@@ -30,6 +34,7 @@ async fn handler(_event: Request) -> Result<Response<Body>, Error> {
     let resp = Response::builder()
         .status(200)
         .header("content-type", "application/json")
+        .header("Access-Control-Allow-Origin", cors_origin)
         .body(serde_json::to_string(&body).unwrap().into())
         .unwrap();
 
@@ -55,6 +60,7 @@ mod tests {
             "GITHUB_APP_PRIVATE_KEY",
             "----- EXAMPLE -----\nTesting\n----- END -----\n",
         );
+        env::set_var("CORS_ALLOW_ORIGIN", "http://example.sidecars.dev");
 
         let req = http::request::Builder::new()
             .method(http::method::Method::GET)

@@ -82,6 +82,10 @@ pub fn get_app() -> Result<GitHubApp, Box<dyn std::error::Error>> {
 }
 
 pub fn outgoing_prs() -> Result<(), Box<dyn std::error::Error>> {
+    // TODO: Get App
+    // TODO: Get App Token
+    // TODO: Perform query
+
     // GraphQL Query
     let _query = r#"
     {
