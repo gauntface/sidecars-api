@@ -32,6 +32,7 @@ Globals:
         SIDECARS_ENV: !Ref SidecarsEnv
         GITHUB_APP_ID: !Ref GitHubAppID
         GITHUB_APP_PRIVATE_KEY: !Ref GitHubAppPrivateKey
+        CORS_ALLOW_ORIGIN: !Ref GatewayCorsOrigins
 
 Resources:
   ApiGateway:
