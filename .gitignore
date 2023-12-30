@@ -4,3 +4,5 @@ lambda/target/
 *.pem
 .envrc
 env.json
+.vscode/
+node_modules/

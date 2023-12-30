@@ -122,12 +122,19 @@ pub fn outgoing_prs() -> Result<(), Box<dyn std::error::Error>> {
         HeaderValue::from_str("application/vnd.github+json")?,
     );
 
+    /* let client = reqwest::blocking::Client::new();
+    let install_response = client
+        .get("https://api.github.com/app/installations")
+        .headers(headers)
+        .send()?;
+    println!("Status:---------------> {}", install_response.status());
+    println!("Body:-----------------> {}", install_response.text()?);*/
+
     let query = r#"
     {
         user(login: "gauntface") {
             login
             name
-            email
         }
     }
     "#;

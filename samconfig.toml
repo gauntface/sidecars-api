@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "focused-api"
+stack_name = "sidecars-api"
 
 [default.build.parameters]
 cached = true
@@ -29,3 +29,7 @@ warm_containers = "EAGER"
 
 [default.local_start_lambda.parameters]
 warm_containers = "EAGER"
+
+[local.local_start_api.parameters]
+warm_containers = "EAGER"
+parameter_overrides="GatewayCorsOrigins=http://localhost:4321"

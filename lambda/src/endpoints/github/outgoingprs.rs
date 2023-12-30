@@ -1,5 +1,6 @@
 use lambda_http::{run, service_fn, Body, Error, Request, Response};
 use serde::Serialize;
+use std::env;
 
 use sidecars::apis::github;
 
@@ -12,14 +13,20 @@ struct ErrorResponseBody {
 }
 
 async fn handler(_event: Request) -> Result<Response<Body>, Error> {
-    let app = github::outgoing_prs();
-    if app.is_err() {
+    let cors_origins =
+        env::var("CORS_ALLOW_ORIGIN").expect("Environment variable CORS_ALLOW_ORIGINS is not defined.");
+
+    print!("CORS_ALLOW_ORIGIN: {}", cors_origins);
+
+    let prs = github::outgoing_prs();
+    if prs.is_err() {
         let body = ErrorResponseBody {
-            message: format!("Failed to get outgoing PRs: {}", app.err().unwrap()),
+            message: format!("Failed to get outgoing PRs: {}", prs.err().unwrap()),
         };
         let resp = Response::builder()
             .status(500)
             .header("content-type", "application/json")
+            .header("Access-Control-Allow-Origin", cors_origins)
             .body(serde_json::to_string(&body).unwrap().into())
             .unwrap();
 
@@ -30,6 +37,7 @@ async fn handler(_event: Request) -> Result<Response<Body>, Error> {
     let resp = Response::builder()
         .status(200)
         .header("content-type", "application/json")
+        .header("Access-Control-Allow-Origin", cors_origins)
         .body(serde_json::to_string(&body).unwrap().into())
         .unwrap();
 
