@@ -22,7 +22,7 @@ features = ["apigw_http"]
 
 # standard crate data is left out
 [dev-dependencies]
-cargo-llvm-cov = ">= 0.6.0"
+cargo-llvm-cov = ">= 0.6.1"
 
 [[bin]]
 name = "healthcheck_ok"
