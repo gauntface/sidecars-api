@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-chrono = "0.4.32"
+chrono = "0.4.33"
 jsonwebtoken = "9.2.0"
 lambda_runtime = "0.9.1"
 openssl = { version = "0.10.63", features = ["vendored"] }
@@ -22,7 +22,7 @@ features = ["apigw_http"]
 
 # standard crate data is left out
 [dev-dependencies]
-cargo-llvm-cov = ">= 0.6.3"
+cargo-llvm-cov = ">= 0.6.4"
 
 [[bin]]
 name = "healthcheck_ok"
